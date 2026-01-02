@@ -1,0 +1,26 @@
+vector<int>getallct(string input){
+      vector<int>r;
+      stack<string>st;
+      string t;
+      string cl = "";
+      stringstream ss(input);
+      while(ss>>t){
+	if(t=="BEGIN"){
+	  st.push("BEGIN");
+	  cl="";
+	  }
+	else if(t=="END"){
+	  if(!st.empty()){
+	    st.pop();
+	    int closingtime = getminpenalty(cl);
+	    r.push_back(closingtime);
+	    cl="";
+	     }
+	 }
+	else{
+	   cl+=t;
+	}
+      }
+	return r;
+}
+ 

@@ -1,0 +1,21 @@
+#include<iostream>
+#include<string>
+#include<vector>
+#include<climits>
+#include<sstream>
+#include<stack>
+
+using namespace std;
+
+// Compute penalty
+int compute_penalty(string log, int ct){
+     int n= log.length();
+     int p=0;
+     for(int i=0;i<ct&&i<n;i++){
+	if(log[i]=='N') p++;
+     }
+     for(int i=ct;i<n;i++){
+	if(log[i]=='Y') p++;
+     }
+     return p;
+}
