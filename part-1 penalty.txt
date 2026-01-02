@@ -1,21 +1,23 @@
-#include<iostream>
-#include<string>
-#include<vector>
-#include<climits>
-#include<sstream>
-#include<stack>
+public class PenaltyCalc {
+    public static int computePenalty(String log, int ct) {
+        int n = log.length();
+        int p = 0;
 
-using namespace std;
+        for (int i = 0; i < ct && i < n; i++) {
+            if (log.charAt(i) == 'N') {
+                p++;
+            }
+        }
 
-// Compute penalty
-int compute_penalty(string log, int ct){
-     int n= log.length();
-     int p=0;
-     for(int i=0;i<ct&&i<n;i++){
-	if(log[i]=='N') p++;
-     }
-     for(int i=ct;i<n;i++){
-	if(log[i]=='Y') p++;
-     }
-     return p;
+        for (int i = ct; i < n; i++) {
+            if (log.charAt(i) == 'Y') {
+                p++;
+            }
+        }
+
+        return p;
+    }
+    public static void main(String[] args) {
+            System.out.println(computePenalty("YYNNY", 2));
+    }
 }
