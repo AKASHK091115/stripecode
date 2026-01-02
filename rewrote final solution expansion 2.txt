@@ -1,0 +1,62 @@
+class Solution {
+public:
+    string readWord(const string& s, int& i) {
+        string w;
+        while (i < s.size() && islower(s[i]))
+            w += s[i++];
+        return w;
+    }
+
+    unordered_set<string> dfs(const string& s, int& i) {
+        unordered_set<string> result;   // union bucket
+        unordered_set<string> chain;    // concat chain
+
+        while (i < s.size() && s[i] != '}') {
+
+            // comma → commit current chain into result
+            if (s[i] == ',') {
+                result.insert(chain.begin(), chain.end());
+                chain.clear();
+                i++;
+                continue;
+            }
+
+            // parse next token → goes into t
+            unordered_set<string> t;
+            if (s[i] == '{') {
+                i++;                    // skip '{'
+                t = dfs(s, i);          // recurse
+                i++;                    // skip '}'
+            } else {
+                t.insert(readWord(s, i));
+            }
+
+            // first segment in chain
+            if (chain.empty()) {
+                chain = std::move(t);
+                continue;
+            }
+
+            // concatenate chain × t
+            unordered_set<string> combined;
+            for (auto& a : chain)
+                for (auto& b : t)
+                    combined.insert(a + b);
+
+            chain.swap(combined);
+        }
+
+        // flush remaining chain
+        result.insert(chain.begin(), chain.end());
+        return result;
+    }
+
+    vector<string> braceExpansionII(string expr) {
+            int i = 0;
+            auto setRes = dfs(expr, i);
+
+            vector<string> res(setRes.begin(), setRes.end());
+            sort(res.begin(), res.end());
+            return res;
+    }
+};
