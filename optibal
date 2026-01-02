@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int dfs(vector<int>& debt, int start) {
+        while(start < debt.size() && debt[start] == 0) start++;
+        if(start == debt.size()) return 0;
+        int minTrans = INT_MAX;
+        for(int i = start + 1; i < debt.size(); i++) {
+            if(debt[start] * debt[i] < 0) { 
+                debt[i] += debt[start];
+                minTrans = min(minTrans, 1 + dfs(debt, start + 1));
+                debt[i] -= debt[start]; 
+            }
+        }
+        return minTrans;
+    }
+    int minTransfers(vector<vector<int>>& transactions) {
+        unordered_map<int,int> mp;
+        for(auto& t : transactions){
+            mp[t[0]] -= t[2];
+            mp[t[1]] += t[2];
+        }
+        vector<int> debt;
+        for(auto& it : mp) if(it.second != 0) debt.push_back(it.second);
+        return dfs(debt, 0);
+    }
+};
